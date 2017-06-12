@@ -21,7 +21,12 @@ kube::multinode::main
 
 kube::multinode::log_variables
 
-kube::multinode::turndown
+# Remove turndown due to possible race condition bug. Subject
+# to further investigation. Currently remove this line as a temporary
+# fix. It doesn't not affect the current etcd creation. This turndown is
+# needed to do inplace replacement of etcd. The turndown ensures
+# that old etcd instances are removed before new ones are created.
+# kube::multinode::turndown
 
 # We're running etcd in the bootstrap daemon, just
 # to make minimal changes to docker-multinode. It's
