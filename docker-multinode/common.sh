@@ -103,6 +103,7 @@ kube::multinode::main(){
     ${KUBELET_MOUNT} \
     -v /var/log/containers:/var/log/containers:rw \
     -v /etc/kubernetes:/etc/kubernetes:rw \
+    -v /root/data:/root/data:rw \
     -v /dev:/dev:rw"
 
   # Paths
@@ -242,7 +243,6 @@ kube::multinode::start_k8s_master() {
     /hyperkube kubelet \
       --allow-privileged \
       --anonymous-auth=true \
-      --api-servers=https://localhost:6443 \
       --pod-manifest-path=/etc/kubernetes/manifests-multi \
       --cluster-dns=10.0.0.10 \
       --cluster-domain=cluster.local \
@@ -251,6 +251,7 @@ kube::multinode::start_k8s_master() {
       ${CNI_ARGS} \
       ${CONTAINERIZED_FLAG} \
       --hostname-override=${IP_ADDRESS} \
+      --require-kubeconfig=true \
       --kubeconfig=/var/lib/kubelet/kubeconfig/kubeconfig.yaml \
       --node-labels="vm-hostname=${HOSTNAME},kubernetes.io/role=master" \
       --v=2
